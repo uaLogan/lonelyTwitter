@@ -23,14 +23,16 @@ public abstract class lonelyTweetModel
 		return text;
 	}
 
-	public abstract void setText(String text);
+	public abstract void setText(String text) throws Exception; 
 	
 	public Date getTimestamp(){
 		return timestamp;
 	}
 	
-	public void setTimestamp(Date timestamp){
+	public void setTimestamp(Date timestamp)
+	{
 		this.timestamp = timestamp;
 	}
+	
+	public abstract boolean isImportant();
 }
-
