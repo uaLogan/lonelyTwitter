@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 import android.app.Activity;
@@ -23,6 +24,10 @@ public class LonelyTwitterActivity extends Activity {
 	private static final String FILENAME = "file.sav";
 	private EditText bodyText;
 	private ListView oldTweetsList;
+	private ArrayAdapter<String> adapter;
+	
+	private ArrayList<String> tweets = new ArrayList<String>();
+	private String textToAdd = "";
 	
 	/** Called when the activity is first created. */
 	@Override
@@ -38,20 +43,21 @@ public class LonelyTwitterActivity extends Activity {
 
 			public void onClick(View v) {
 				setResult(RESULT_OK);
-				String text = bodyText.getText().toString();
-				saveInFile(text, new Date(System.currentTimeMillis()));
-				finish();
-
+				textToAdd = bodyText.getText().toString();
+				saveInFile(textToAdd, new Date(System.currentTimeMillis()));
+				//finish();
+				adapter.add(textToAdd);
+				adapter.notifyDataSetChanged();
 			}
 		});
 	}
 
 	@Override
-	protected void onStart() {
+	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onStart();
-		String[] tweets = loadFromFile();
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+		tweets = new ArrayList(Arrays.asList(loadFromFile()));
+		adapter = new ArrayAdapter<String>(this,
 				R.layout.list_item, tweets);
 		oldTweetsList.setAdapter(adapter);
 	}
