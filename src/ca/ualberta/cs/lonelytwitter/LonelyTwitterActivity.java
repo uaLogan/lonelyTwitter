@@ -99,17 +99,10 @@ public class LonelyTwitterActivity extends Activity {
 	}
 
 	private void loadFromFile() {
-		//ArrayList<String> tweets = new ArrayList<String>();
 		try {
 			FileInputStream fis = openFileInput(FILENAME);
 			InputStreamReader isr = new InputStreamReader(fis);
 			BufferedReader in = new BufferedReader(isr);
-			
-/*			String line = in.readLine();
-			while (line != null) {
-				tweets.add(line);
-				line = in.readLine();
-			}*/
 			
 			try
 			{
@@ -122,30 +115,24 @@ public class LonelyTwitterActivity extends Activity {
 			}
 
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//return tweets.toArray(new String[tweets.size()]);
 	}
 	
 	private void saveInFile() {
 		try {
 			
 			FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-			//String textToWrite = date.toString() + " | " + text + "\n";
 			OutputStreamWriter osw = new OutputStreamWriter(fos);
 			gson.toJson(tweets, osw);
 			osw.close();
 			fos.close();
 			
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
