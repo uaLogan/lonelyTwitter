@@ -36,7 +36,7 @@ public class NormalTweetAdapter extends ArrayAdapter<NormalTweetModel>
         if (item!= null)
         {
             //only one TextView
-            TextView itemView = (TextView) view.findViewById(R.id.oldTweetsList);
+            TextView itemView = (TextView) view.findViewById(R.id.oldTweetsText);
             if (itemView != null)
             {
                 //format view

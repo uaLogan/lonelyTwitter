@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -16,6 +17,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 
 import android.app.Activity;
 import android.content.Context;
@@ -32,14 +34,13 @@ public class LonelyTwitterActivity extends Activity {
 	private static final String FILENAME = "file.sav";
 	private EditText bodyText;
 	private ListView oldTweetsList;
-	private ArrayAdapter<String> adapter;
+	private NormalTweetAdapter adapter;
 	
-	private ArrayList<String> tweets = new ArrayList<String>();
-	private String textToAdd = "";
+	private ArrayList<NormalTweetModel> tweets = new ArrayList<NormalTweetModel>();
+	private NormalTweetModel tweetToAdd;
 	
 	private Gson gson;
 	
-	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -53,9 +54,8 @@ public class LonelyTwitterActivity extends Activity {
 		saveButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				textToAdd = bodyText.getText().toString();
-				textToAdd = formatNewTweet(textToAdd);
-				adapter.add(textToAdd);
+				tweetToAdd = new NormalTweetModel(bodyText.getText().toString());
+				adapter.add(tweetToAdd);
 				saveInFile();
 				adapter.notifyDataSetChanged();
 			}
@@ -86,8 +86,8 @@ public class LonelyTwitterActivity extends Activity {
 		super.onStart();
 		loadFromFile();
 		if(tweets == null)
-			tweets = new ArrayList<String>();
-		adapter = new ArrayAdapter<String>(this,
+			tweets = new ArrayList<NormalTweetModel>();
+		adapter = new NormalTweetAdapter(this,
 				R.layout.list_item, tweets);
 		oldTweetsList.setAdapter(adapter);
 	}
@@ -105,13 +105,14 @@ public class LonelyTwitterActivity extends Activity {
 			BufferedReader in = new BufferedReader(isr);
 			
 			try
-			{
-				tweets = gson.fromJson(in, ArrayList.class);
+			{ 
+				Type myType = new TypeToken<ArrayList<NormalTweetModel>>(){}.getType();
+				tweets = gson.fromJson(in, myType);
 			}
 			catch(Exception e)
 			{
 				//Log.d("MyTag", "except_gen");
-				tweets = new ArrayList<String>();
+				tweets = new ArrayList<NormalTweetModel>();
 			}
 
 		} catch (FileNotFoundException e) {
