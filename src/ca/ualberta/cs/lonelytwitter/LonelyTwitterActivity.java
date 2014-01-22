@@ -85,6 +85,8 @@ public class LonelyTwitterActivity extends Activity {
 	protected void onResume() {
 		super.onStart();
 		loadFromFile();
+		if(tweets == null)
+			tweets = new ArrayList<String>();
 		adapter = new ArrayAdapter<String>(this,
 				R.layout.list_item, tweets);
 		oldTweetsList.setAdapter(adapter);
@@ -113,20 +115,10 @@ public class LonelyTwitterActivity extends Activity {
 			{
 				tweets = gson.fromJson(in, ArrayList.class);
 			}
-			catch(JsonIOException e)
+			catch(Exception e)
 			{
-				Log.d("MyTag", "qqqqqq");
-				e.printStackTrace();
-			}
-			catch(JsonSyntaxException e)
-			{
-				Log.d("MyTag", "qqqqqqqq");
-				e.printStackTrace();
-			}
-			catch(JsonParseException e)
-			{
-				Log.d("MyTag", "qqqqqqqqqq");
-				e.printStackTrace();
+				//Log.d("MyTag", "except_gen");
+				tweets = new ArrayList<String>();
 			}
 
 		} catch (FileNotFoundException e) {
