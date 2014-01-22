@@ -37,29 +37,54 @@ public class LonelyTwitterActivity extends Activity {
 
 		bodyText = (EditText) findViewById(R.id.body);
 		Button saveButton = (Button) findViewById(R.id.save);
+		Button clearButton = (Button) findViewById(R.id.clear);
 		oldTweetsList = (ListView) findViewById(R.id.oldTweetsList);
 
 		saveButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				setResult(RESULT_OK);
+				//setResult(RESULT_OK);
 				textToAdd = bodyText.getText().toString();
 				saveInFile(textToAdd, new Date(System.currentTimeMillis()));
 				//finish();
+				textToAdd = formatNewTweet(textToAdd);
 				adapter.add(textToAdd);
 				adapter.notifyDataSetChanged();
+			}
+		});
+		
+		clearButton.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View v) {
+				adapter.clear();
+				adapter.notifyDataSetChanged();
+				
+				try
+				{
+					openFileOutput(FILENAME,
+							Context.MODE_PRIVATE);
+				} catch (FileNotFoundException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 	}
 
 	@Override
 	protected void onResume() {
-		// TODO Auto-generated method stub
 		super.onStart();
-		tweets = new ArrayList(Arrays.asList(loadFromFile()));
+		tweets = new ArrayList(Arrays.asList(loadFromFile())); //loadFromFile call is here*
 		adapter = new ArrayAdapter<String>(this,
 				R.layout.list_item, tweets);
 		oldTweetsList.setAdapter(adapter);
+	}
+	
+	private String formatNewTweet(String text)
+	{
+		Date date = new Date(System.currentTimeMillis());
+		return date.toString() + " | " + text;
 	}
 
 	private String[] loadFromFile() {
@@ -87,7 +112,7 @@ public class LonelyTwitterActivity extends Activity {
 		try {
 			FileOutputStream fos = openFileOutput(FILENAME,
 					Context.MODE_APPEND);
-			fos.write(new String(date.toString() + " | " + text)
+			fos.write(new String(date.toString() + " | " + text + "\n")
 					.getBytes());
 			fos.close();
 		} catch (FileNotFoundException e) {
