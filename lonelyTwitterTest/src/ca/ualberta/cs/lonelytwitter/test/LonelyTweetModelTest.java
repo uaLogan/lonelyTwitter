@@ -17,7 +17,7 @@ public class LonelyTweetModelTest extends ActivityInstrumentationTestCase2<Lonel
 	}
 }
 
-//test
+//test (add a test)
 //fail
 //code (simplest possible code that passes)
 //pass
