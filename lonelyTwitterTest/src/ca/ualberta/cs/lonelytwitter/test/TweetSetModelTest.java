@@ -1,6 +1,7 @@
 package ca.ualberta.cs.lonelytwitter.test;
 
 import ca.ualberta.cs.lonelytwitter.ImportantTweetModel;
+import ca.ualberta.cs.lonelytwitter.LonelyTweetModel;
 import ca.ualberta.cs.lonelytwitter.LonelyTwitterActivity;
 import ca.ualberta.cs.lonelytwitter.NormalTweetModel;
 import ca.ualberta.cs.lonelytwitter.TweetSetModel;
@@ -30,6 +31,7 @@ public class TweetSetModelTest extends ActivityInstrumentationTestCase2<LonelyTw
 		
 		ImportantTweetModel tweet1 = new ImportantTweetModel("test");
 		
+		//stall for time
 		double c = 0;
 		while(c < 800000000.0)
 		{
@@ -41,23 +43,25 @@ public class TweetSetModelTest extends ActivityInstrumentationTestCase2<LonelyTw
 		ImportantTweetModel tweet2 = new ImportantTweetModel("test");
 		
 		//different time, same text
-		assertEquals("different timestamps", tweet1.equals(tweet2), false);
+		assertEquals("different timestamps", false, tweet1.equals(tweet2));
 		
 		//same time, same text
 		tweet2.setTimestamp(tweet1.getTimestamp());
-		assertEquals("same timestamps, same text", tweet1.equals(tweet2), true);
+		assertEquals("same timestamps, same text", true, tweet1.equals(tweet2));
 		
 		//same time, different text
 		tweet2.setText("aaaa");
-		assertEquals("different text", tweet1.equals(tweet2), false);
+		assertEquals("different text", false, tweet1.equals(tweet2));
 		
 		//different time, different text
 		ImportantTweetModel tweet3= new ImportantTweetModel("aaaa");
-		assertEquals("different both", tweet3.equals(tweet2), false);
+		assertEquals("different both", false, tweet3.equals(tweet2));
 		
-		//assertEquals("same text", tweet1.getText(), tweet2.getText());
+		ImportantTweetModel tweet4 = new ImportantTweetModel("a");
+		NormalTweetModel tweet5 = new NormalTweetModel("a");
+		tweet4.setTimestamp(tweet5.getTimestamp());
 		
-		//assertEquals("should be the same now", tweet1.equals(tweet2), true);
+		assertEquals("different class", false, tweet4.equals(tweet5));
 	}
 
 }
