@@ -33,11 +33,12 @@ public abstract class LonelyTweetModel {
 	}
 	
 	public boolean equals(Object other) {
-		if (other == null || !(other instanceof LonelyTweetModel)) {
+		if (other == null || !(other instanceof LonelyTweetModel)) 
+		{
 			return false;
 		}
 		
 		LonelyTweetModel otherTweet = (LonelyTweetModel) other;
-		return timestamp.equals(otherTweet.timestamp) && text.equals(otherTweet.text);
+		return ((this.timestamp.equals(otherTweet.timestamp)) && (this.text.equals(otherTweet.text)));
 	}
 }
