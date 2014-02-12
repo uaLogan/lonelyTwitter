@@ -9,6 +9,8 @@ public class IntentReaderActivity extends Activity {
 
 	public static final String TEXT_KEY = "TEXT";
 	public static final String TRANSFORM_KEY = "TRANSFORM";
+	
+	public static final String DEFAULT_TEXT = "No Text Passed";
 
 	public static final int NORMAL = 1;
 	public static final int REVERSE = 2;
@@ -25,6 +27,22 @@ public class IntentReaderActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_intent_reader);
+		
+		Intent intent = getIntent();
+		mode = intent.getIntExtra(TRANSFORM_KEY, NORMAL);
+		
+		String intentText =  intent.getStringExtra(TEXT_KEY);
+		TextView textView = (TextView)findViewById(R.id.intentText);
+		
+		if(intentText != null)
+		{
+			text = transformText(intentText);
+			textView.setText(text);
+		}
+		else
+		{
+			textView.setText(DEFAULT_TEXT);
+		}
 	}
 	
 	public String transformText(String text) {
